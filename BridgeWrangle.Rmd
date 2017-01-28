@@ -1,0 +1,19 @@
+---
+title: "Bridges"
+output: html_document
+---
+
+```{r, echo = FALSE}
+main<- data.frame()
+year<- numeric()
+
+for(i in 10:12){
+  cat(i)
+ url <- paste("https://www.fhwa.dot.gov/bridge/nbi/20", i, "/delimited/PR", i, ".txt", sep = "")
+ dat <- read_csv(url, col_types = cols(RECORD_TYPE_005A = col_character()))
+ year<- c(year, rep(paste(20, i, sep =""), dim(dat)[1]))
+ main<-rbind(main, dat)
+}
+
+
+```
