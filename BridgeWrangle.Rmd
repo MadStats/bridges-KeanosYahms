@@ -4,20 +4,22 @@ output: html_document
 ---
 
 ```{r, echo = FALSE}
-library(tidyverse)
+library(tidyverse) # Load in some necessary packages
 library(dplyr)
 
-main<- data.frame()
-year<- numeric()
+main<- data.frame() # The empty location for the bridge data
 
-for(i in 10:16){
+for(i in 10:16){ # Loop through years 2010 through 16 (the only avail. urls for delimited data)
  url <- paste("https://www.fhwa.dot.gov/bridge/nbi/20", i, "/delimited/PR", i, ".txt", sep = "")
- dat <- read_csv(url, col_types = cols(RECORD_TYPE_005A = col_character(), DESIGN_LOAD_031 = col_character()))
- reduced<- select(dat, 1:2, 13, 16,20:21,27,30,31,33:36,41,48:49,67:71, 73, 75,102  )
- year<-  rep(paste(20, i, sep =""), dim(dat)[1])
+ dat <- read_csv(url, col_types = cols(RECORD_TYPE_005A = col_character(), DESIGN_LOAD_031 = col_character())) # Pull Bridge data from the url for the current, ith year
+ reduced<- select(dat, 1:2, 13, 16,20:21,27,30,31,33:36,41,48:49,67:71, 73, 75,102  ) # Select our reduced set of variables for the current year
+ year<-  rep(paste(20, i, sep =""), dim(dat)[1]) # Add the "year" column to the current dataframe
   reduced<- cbind(reduced, year)
- main<-rbind(main, reduced)
+ main<-rbind(main, reduced) # Add the current year's data to the overall dataframe
 }
+
+# Now we have main, a dataframe with PR from 2010 to 2016
+# Changing PR to a different territory brings about different parsing errors which should be attended to similarly
 
 
 ```
